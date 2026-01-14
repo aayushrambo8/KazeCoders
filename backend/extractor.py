@@ -6,6 +6,8 @@ Provides `extract_http_requests(pcap_file)` which yields dicts with
 from urllib.parse import unquote_plus
 import asyncio
 import os
+import subprocess
+import tempfile
 
 try:
     import pyshark
@@ -48,8 +50,23 @@ def extract_http_requests(pcap_file):
                 pass
             break
 
+    def _open_capture(path, custom_params=None):
+        kwargs = dict(display_filter='http.request', keep_packets=False)
+        if custom_params:
+            kwargs['custom_parameters'] = custom_params
+        return pyshark.FileCapture(path, **kwargs)
+
     try:
-        capture = pyshark.FileCapture(pcap_file, display_filter='http.request', keep_packets=False)
+        ext = os.path.splitext(str(pcap_file))[1].lower()
+        if ext == '.ipdr':
+            # Try to open IPDR directly by instructing tshark to use the 'ipdr' format.
+            try:
+                capture = _open_capture(pcap_file, custom_params=['-F', 'ipdr'])
+            except Exception:
+                # Fall back to attempting without format flag; surface original error if it fails.
+                capture = _open_capture(pcap_file)
+        else:
+            capture = _open_capture(pcap_file)
     except Exception as e:
         # If pyshark signals tshark missing, surface a friendly message.
         if TSharkNotFoundException is not None and isinstance(e, TSharkNotFoundException):
@@ -57,9 +74,6 @@ def extract_http_requests(pcap_file):
                 "TShark (the tshark binary from Wireshark) was not found.\n"
                 "Install Wireshark or add the directory containing 'tshark' to your PATH.\n"
                 "On Windows you can verify with: where tshark\n"
-                f"If Wireshark is installed in a non-standard location (e.g. D:\\Program Files),\n"
-                f"set the PATH or update this script to point to: {p}\n"
-                f"Original error: {e}"
             ) from e
         raise
     try:
@@ -95,4 +109,7 @@ def extract_http_requests(pcap_file):
 
             yield {'src_ip': src_ip, 'method': method, 'url': full_url}
     finally:
-        capture.close()
+        try:
+            capture.close()
+        except Exception:
+            pass
