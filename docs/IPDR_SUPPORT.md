@@ -22,7 +22,7 @@ Troubleshooting
   - macOS/Linux: `which tshark`
 - Confirm `tshark` can read the file directly:
 ```
-tshark -r example.ipdr -V | head
+tshark -r example.ipdr -V | head 
 ```
 - If `tshark` cannot read IPDR files on your system, consider converting to pcap with a `tshark` build that supports IPDR, or provide PCAP inputs instead.
 
