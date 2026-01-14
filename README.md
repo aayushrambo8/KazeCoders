@@ -3,7 +3,6 @@ KazeCoders for the win on DevConquest
 
 # URL-Based HTTP Attack Detector
 
-
 ## What it does
 - Ingests PCAP files
 - Extracts HTTP requests
