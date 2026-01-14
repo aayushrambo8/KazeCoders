@@ -9,6 +9,11 @@ This file provides beginner-friendly functions to extract HTTP requests
 from a PCAP file, normalize URLs, and detect common URL-based attacks
 using rule-based signatures (no ML).
 """
+import asyncio
+import sys
+
+if sys.platform.startswith("win"):
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 import sys
 import re
 import logging
