@@ -69,9 +69,16 @@ def extract_http_requests(pcap_file):
             except Exception:
                 src_ip = 'UNKNOWN'
 
-            method = getattr(pkt.http, 'request_method', '')
-            host = getattr(pkt.http, 'host', '')
-            uri = getattr(pkt.http, 'request_uri', '')
+            # Some packets may not have an HTTP layer (e.g., TCP, FTP); guard access.
+            http_layer = getattr(pkt, 'http', None)
+            if http_layer is None:
+                method = ''
+                host = ''
+                uri = ''
+            else:
+                method = getattr(http_layer, 'request_method', '')
+                host = getattr(http_layer, 'host', '')
+                uri = getattr(http_layer, 'request_uri', '')
 
             if uri and uri.startswith('http'):
                 full_url = uri
