@@ -1,8 +1,7 @@
-"""Compatibility wrapper for the modular detector.
+"""Clean compatibility wrapper for the modular detector.
 
-This module re-exports the core functions from the smaller modules so
-existing imports continue to work while implementation lives in
-`extractor.py`, `normalizer.py`, `detector.py`, and `runner.py`.
+Use this file if `backend.py` is corrupted. It re-exports the same
+symbols and provides the CLI entrypoint used previously.
 """
 from runner import run_detection, main_cli
 from extractor import extract_http_requests
@@ -19,4 +18,3 @@ __all__ = [
 
 if __name__ == '__main__':
     main_cli()
-
