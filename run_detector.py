@@ -1,6 +1,6 @@
 """Small top-level runner to preserve CLI compatibility.
 
-Usage: `python run_detector.py <pcap-file>`
+Usage: `python run_detector.py <pcap|ipdr-file>`
 It delegates to the `backend` package runner.
 """
 from backend.runner import main_cli

@@ -33,7 +33,7 @@ def main_cli():
     if len(sys.argv) > 1:
         pcap = sys.argv[1]
     else:
-        print('Usage: python -m backend.runner <pcap-file>')
+        print('Usage: python -m backend.runner <pcap|ipdr-file>')
         sys.exit(1)
 
     print(f'Running detection on: {pcap}')
