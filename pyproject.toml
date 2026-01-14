@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kazeconquest-detector"
+version = "0.1.0"
+description = "PCAP detector backend for DevConquest hackathon"
+authors = [
+  { name = "KazeCoders" }
+]
+
+[tool.poetry]
+
+[tool.black]
+line-length = 88

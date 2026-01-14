@@ -4,10 +4,7 @@ This module re-exports the core functions from the smaller modules so
 existing imports continue to work while implementation lives in
 `extractor.py`, `normalizer.py`, `detector.py`, and `runner.py`.
 """
-from runner import run_detection, main_cli
-from extractor import extract_http_requests
-from normalizer import normalize_url
-from detector import detect_attack
+from backend import run_detection, main_cli, extract_http_requests, normalize_url, detect_attack
 
 __all__ = [
     'extract_http_requests',
